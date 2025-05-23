@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Send, MessageCircle, Wallet, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { openaiService } from "@/lib/services/openai";
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
   id: number;
@@ -34,7 +35,7 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
     {
       id: 1,
       type: "bot",
-      text: "¡Hola! Soy tu asistente financiero. ¿En qué puedo ayudarte hoy?"
+      text: "¡Hola! Soy Paco, tu asistente financiero de Inbursa. ¿En qué puedo ayudarte hoy?"
     }
   ]);
   const [input, setInput] = useState("");
@@ -63,13 +64,25 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
     setIsTyping(true);
 
     try {
-      if (apiKey) {
-        await processWithExternalAI(input, userMessage.id);
-      } else {
-        simulateBotResponse(input);
-      }
+      console.log("Enviando mensaje a OpenAI:", input);
+      const response = await openaiService.sendMessage(input);
+
+      console.log("Respuesta de OpenAI:", response);
+
+      const botMessage: Message = {
+        id: messages.length + 2,
+        type: "bot",
+        text: response
+      };
+
+      setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
-      console.error("Error processing message:", error);
+      console.error("Error al procesar mensaje:", error);
+      toast({
+        title: "Error",
+        description: "Hubo un problema al comunicarse con el asistente. Por favor, intenta de nuevo.",
+        variant: "destructive"
+      });
       setMessages((prev) => [
         ...prev,
         {
@@ -78,78 +91,9 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
           text: "Lo siento, tuve un problema al procesar tu mensaje. ¿Podrías intentarlo de nuevo?"
         }
       ]);
-      setIsTyping(false);
-    }
-  };
-
-  const processWithExternalAI = async (userInput: string, messageId: number) => {
-    try {
-      simulateBotResponse(userInput);
-    } catch (error) {
-      console.error("Error calling AI API:", error);
-      throw error;
     } finally {
       setIsTyping(false);
     }
-  };
-
-  const simulateBotResponse = (userInput: string) => {
-    setTimeout(() => {
-      let botResponse: Message;
-
-      if (userInput.toLowerCase().includes("tarjeta") || userInput.toLowerCase().includes("crédito")) {
-        botResponse = {
-          id: messages.length + 2,
-          type: "bot",
-          text: "Basado en tu perfil financiero, te recomiendo estas tarjetas de crédito:",
-          products: [
-            {
-              name: "Tarjeta Rewards Plus",
-              description: "3% cashback en restaurantes, 2% en viajes",
-              match: 95
-            },
-            {
-              name: "Tarjeta Platinum",
-              description: "Tasa preferencial y beneficios exclusivos",
-              match: 87
-            }
-          ]
-        };
-      } else if (userInput.toLowerCase().includes("ahorro") || userInput.toLowerCase().includes("ahorrar")) {
-        botResponse = {
-          id: messages.length + 2,
-          type: "bot",
-          text: "Aquí hay algunos consejos para mejorar tus hábitos de ahorro:",
-          options: [
-            {
-              title: "Regla 50/30/20",
-              description: "Destina 50% a necesidades, 30% a deseos y 20% a ahorro.",
-              icon: Wallet
-            },
-            {
-              title: "Ahorro automático",
-              description: "Configura transferencias automáticas a tu cuenta de ahorro cada quincena.",
-              icon: ArrowRight
-            }
-          ]
-        };
-      } else if (userInput.toLowerCase().includes("préstamo") || userInput.toLowerCase().includes("crédito auto")) {
-        botResponse = {
-          id: messages.length + 2,
-          type: "bot",
-          text: "Con tu score crediticio de 715, podrías calificar para un crédito automotriz con una tasa desde 9.9% anual. ¿Te gustaría hacer una simulación personalizada?",
-        };
-      } else {
-        botResponse = {
-          id: messages.length + 2,
-          type: "bot",
-          text: "Puedo ayudarte con información sobre tus finanzas, recomendaciones de productos, consejos de ahorro o simulaciones de crédito. ¿Sobre qué tema específico te gustaría saber más?",
-        };
-      }
-
-      setMessages((prev) => [...prev, botResponse]);
-      setIsTyping(false);
-    }, 1500);
   };
 
   const handleProductSelect = (productName: string) => {
@@ -160,15 +104,15 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
   };
 
   const suggestedQuestions = [
-    "¿Cómo puedo mejorar mi score crediticio?",
     "¿Qué tarjeta de crédito me recomiendas?",
-    "Consejos para ahorrar dinero",
-    "¿Califico para un crédito automotriz?"
+    "¿Cómo puedo mejorar mi score crediticio?",
+    "¿Qué seguros ofrecen?",
+    "¿Qué opciones de inversión tienen?"
   ];
 
   return (
-    <div className="flex flex-col h-full">
-      <ScrollArea className="flex-1 px-4 py-2 overflow-y-auto">
+    <div className="flex flex-col h-full max-h-[650px]">
+      <ScrollArea className="flex-1 px-4 py-2 overflow-y-auto max-h-[500px]">
         <div className="space-y-6 pb-4">
           {messages.map((message) => (
             <div
@@ -202,7 +146,13 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
                       : "bg-white border border-gray-200 shadow-sm text-finance-gray-dark rounded-tl-none"
                   }`}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                  {message.type === "bot" ? (
+                    <div className="text-sm whitespace-pre-wrap">
+                      <ReactMarkdown>{message.text}</ReactMarkdown>
+                    </div>
+                  ) : (
+                    <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                  )}
                   
                   {message.options && (
                     <div className="mt-3 space-y-2">
