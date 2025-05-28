@@ -24,11 +24,45 @@ const loadProducts = async (): Promise<Product[]> => {
   }
 };
 
-const SYSTEM_MESSAGE = `Eres Paco, el asistente virtual de Inbursa.
-Tienes acceso completo al catálogo de productos de Inbursa. Tu objetivo es ayudar, informar y recomendar productos financieros de manera personalizada y proactiva, siempre en español.
+const clienteActual = {
+  nombre: "Jessica Rivera Domínguez",
+  id: "276344890",
+  idmex: "IDMEX2984731635",
+  score: 715,
+  scoreLabel: "Bueno",
+  pagosATiempo: 11,
+  pagosTardios: 1,
+  porcentajePagosATiempo: 92,
+  usoCredito: {
+    disponible: 84000,
+    utilizado: 36000,
+    porcentaje: 30,
+    total: 120000,
+    estado: "Óptimo"
+  },
+  cuentas: [
+    { tipo: "Nómina", saldo: 17251 },
+    { tipo: "Ahorro Vacaciones", saldo: 35000 },
+    { tipo: "CETES", saldo: 50000 },
+    { tipo: "Platinum", saldo: 24500 }
+  ],
+  gastos: [
+    { categoria: "Vivienda", monto: 8500, porcentaje: 45 },
+    { categoria: "Transporte", monto: 2200, porcentaje: 12 },
+    { categoria: "Alimentación", monto: 4800, porcentaje: 26 },
+    { categoria: "Entretenimiento", monto: 1800, porcentaje: 10 },
+    { categoria: "Otros", monto: 1500, porcentaje: 8 }
+  ]
+};
+
+const clienteContexto = `\n\nCliente actual:\nNombre: ${clienteActual.nombre}\nID: ${clienteActual.id} | IDMEX: ${clienteActual.idmex}\nScore crediticio: ${clienteActual.score} (${clienteActual.scoreLabel})\nPagos a tiempo: ${clienteActual.pagosATiempo}\nPagos tardíos: ${clienteActual.pagosTardios}\n% Pagos a tiempo: ${clienteActual.porcentajePagosATiempo}%\nUso de crédito: ${clienteActual.usoCredito.porcentaje}% de $${clienteActual.usoCredito.total} (Disponible: $${clienteActual.usoCredito.disponible}, Utilizado: $${clienteActual.usoCredito.utilizado}, Estado: ${clienteActual.usoCredito.estado})\nCuentas activas: ${clienteActual.cuentas.map(c => `${c.tipo}: $${c.saldo}`).join(", ")}\nGastos principales: ${clienteActual.gastos.map(g => `${g.categoria}: $${g.monto} (${g.porcentaje}%)`).join(", ")}\n`;
+
+const SYSTEM_MESSAGE = `Eres Paco, el asistente virtual para ejecutivos de OraBank. Tu objetivo es ayudar a los ejecutivos a obtener una visión integral de los clientes que atienden, identificar oportunidades de ventas cruzadas y sugerir productos o servicios relevantes según el perfil y las necesidades detectadas. Proporciona información clara, profesional y orientada a maximizar el valor para el cliente y la institución. No respondas como si hablaras con el cliente final, sino como un asesor para el ejecutivo.
+
+IMPORTANTE: Siempre responde usando los productos concretos listados en el contexto si el usuario pregunta por recomendaciones, productos o ventas cruzadas. Si no hay productos relevantes, sugiere alternativas del catálogo proporcionado.
 
 Contexto disponible:
-- Catálogo de productos: lista completa de productos y servicios de Inbursa, con todas sus características, beneficios, requisitos y palabras clave asociadas.
+- Catálogo de productos: lista completa de productos y servicios de OraBank, con todas sus características, beneficios, requisitos y palabras clave asociadas.
 
 EXPLICACIÓN DE LAS COLUMNAS DEL CATÁLOGO DE PRODUCTOS (acceso: {{producto['nombre_columna']}}):
 - Título de Variable: Nombre de la variable o campo. (Ejemplo: {{producto['Título de Variable']}})
@@ -74,8 +108,42 @@ export const openaiService = {
     try {
       // Cargar productos
       const products = await loadProducts();
+      // Filtrar productos relevantes según palabras clave en el mensaje del usuario
+      const lowerMsg = userMessage.toLowerCase();
+      let productosRelevantes = products.filter(p => {
+        const nombre = (p["nombre_producto"] || "").toLowerCase();
+        const tipo = (p["tipo_producto"] || "").toLowerCase();
+        const palabras = (p["palabras_clave_asociadas"] || "").toLowerCase();
+        return (
+          lowerMsg.includes(nombre) ||
+          lowerMsg.includes(tipo) ||
+          palabras.split(",").some((kw: string) => lowerMsg.includes(kw.trim()))
+        );
+      });
+      // Palabras clave para forzar inclusión de productos
+      const triggerKeywords = [
+        'recomendación', 'recomendar', 'recomiendas', 'venta cruzada', 'ofrecer', 'sugerir', 'sugerencia', 'oportunidad', 'producto'
+      ];
+      const triggered = triggerKeywords.some(kw => lowerMsg.includes(kw));
+      // Si no hay coincidencias, incluir productos según trigger o los primeros 3 por defecto
+      if (productosRelevantes.length === 0) {
+        if (triggered) {
+          productosRelevantes = products.slice(0, 5);
+        } else {
+          productosRelevantes = products.slice(0, 3);
+        }
+      }
+      // Construir texto de productos para el prompt, reemplazando 'Inbursa' por 'OraBank'
+      const productosTexto = productosRelevantes.map((p, idx) =>
+        `Producto ${idx + 1}:
+- Nombre: ${(p["nombre_producto"] || "").replace(/Inbursa/gi, "OraBank")}
+- Descripción: ${(p["descripcion_comercial"] || "").replace(/Inbursa/gi, "OraBank")}
+- Beneficios: ${(p["beneficios_clave"] || "").replace(/Inbursa/gi, "OraBank")}`
+      ).join('\n\n');
       // Construir el mensaje del sistema
-      const systemMessage = SYSTEM_MESSAGE;
+      const systemMessage = SYSTEM_MESSAGE + clienteContexto + `\n\nProductos relevantes del catálogo para esta consulta:\n${productosTexto}`;
+      // DEPURACIÓN: Mostrar el prompt final en consola
+      console.log("PROMPT ENVIADO A OPENAI:\n", systemMessage);
       // Construir historial (últimos 10 mensajes)
       const messages: { role: 'system' | 'user' | 'assistant'; content: string }[] = [
         { role: 'system', content: systemMessage }
@@ -84,7 +152,6 @@ export const openaiService = {
         messages.push(msg);
       }
       messages.push({ role: 'user', content: userMessage });
-
       // Llamada a OpenAI
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions',
@@ -100,7 +167,6 @@ export const openaiService = {
           }
         }
       );
-
       const aiResponse = response.data.choices[0].message.content;
       // Guardar historial
       conversationHistory.push({ role: 'user', content: userMessage });

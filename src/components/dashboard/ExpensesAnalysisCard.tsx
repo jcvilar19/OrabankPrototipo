@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Info, ArrowUpRight } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -47,7 +46,7 @@ const ExpensesAnalysisCard = () => {
   };
   
   return (
-    <Card className="card-shadow card-hover">
+    <Card className="card-shadow card-hover bg-white">
       <CardHeader className="px-6 pb-0 pt-6">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium">Análisis de Gastos</CardTitle>

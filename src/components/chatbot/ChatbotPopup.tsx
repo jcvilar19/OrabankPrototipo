@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { MessageCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -27,14 +26,12 @@ const ChatbotPopup = () => {
         </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[400px] max-h-[80vh] p-0 flex flex-col overflow-hidden">
-        <DialogHeader className="p-4 bg-finance-blue text-white">
+        <DialogHeader className="p-4 bg-finance-blue-light text-finance-blue">
           <DialogTitle className="flex items-center">
             <MessageCircle className="h-5 w-5 mr-2" />
-            Asistente Financiero
+            <h2 className="font-bold text-xl">Asesoría de ventas inteligente</h2>
           </DialogTitle>
-          <p className="text-xs opacity-80 mt-1 text-left">
-            Respuestas personalizadas basadas en tu perfil financiero
-          </p>
+          <p className="text-xs text-finance-gray-dark">Plataforma automtizada para control y optimización (PACO)</p>
         </DialogHeader>
         <div className="flex-1 overflow-hidden">
           <ChatInterface apiKey={apiKeySet ? apiKey : undefined} />

@@ -10,7 +10,7 @@ const PaymentHistoryCard = () => {
     total: 12
   };
   const onTimePercentage = Math.round(paymentData.onTime / paymentData.total * 100);
-  return <Card className="card-shadow card-hover">
+  return <Card className="card-shadow card-hover bg-white">
       <CardHeader className="px-6 pb-0 pt-6">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium">Historial de Pagos</CardTitle>

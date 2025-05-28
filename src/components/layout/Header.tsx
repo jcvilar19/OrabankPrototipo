@@ -23,9 +23,9 @@ const Header = ({ toggleSidebar }: HeaderProps) => {
         </Button>
         <div className="flex items-center gap-2">
           <span className="bg-gradient-to-r from-finance-blue to-finance-purple p-1 rounded">
-            <span className="text-white font-bold">Fin</span>
+            <span className="text-white font-bold">NS</span>
           </span>
-          <span className="font-semibold text-finance-blue-dark">SavvyAssist</span>
+          <span className="font-semibold text-finance-blue-dark">Nyvora Solutions</span>
         </div>
       </div>
       

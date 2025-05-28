@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Info } from "lucide-react";
@@ -41,7 +40,7 @@ const CreditUsageCard = () => {
   };
   
   return (
-    <Card className="card-shadow card-hover">
+    <Card className="card-shadow card-hover bg-white">
       <CardHeader className="px-6 pb-0 pt-6">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium">Uso de Crédito</CardTitle>

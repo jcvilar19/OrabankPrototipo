@@ -1,4 +1,5 @@
 import axios from 'axios';
+import './lib/services/test-openai-key';
 
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 
@@ -30,4 +31,4 @@ export async function testOpenAIKey() {
 }
 
 // Para probar manualmente, descomenta esto:
-// testOpenAIKey(); 
+ testOpenAIKey(); 

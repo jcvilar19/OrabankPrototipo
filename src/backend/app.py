@@ -25,7 +25,7 @@ def chat():
         # Crear el prompt con el contexto financiero
         prompt = f"""Eres un asistente financiero experto. Proporciona respuestas claras y concisas sobre finanzas personales, 
         productos financieros, y consejos de ahorro. Responde en español.
-
+        
         Pregunta del usuario: {user_message}
 
         Respuesta:"""

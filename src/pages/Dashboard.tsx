@@ -11,8 +11,8 @@ const Dashboard = () => {
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
-        <h1 className="text-2xl font-bold mb-1">Dashboard Financiero</h1>
-        <p className="text-finance-gray-dark">Bienvenido a tu centro de control financiero</p>
+        <h1 className="text-2xl font-bold mb-1">Jessica Rivera Dominguez</h1>
+        <p className="text-finance-gray-dark">276344890 | IDMEX2984731635</p>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

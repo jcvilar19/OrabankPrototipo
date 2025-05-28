@@ -35,7 +35,7 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
     {
       id: 1,
       type: "bot",
-      text: "¡Hola! Soy Paco, tu asistente financiero de Inbursa. ¿En qué puedo ayudarte hoy?"
+      text: "¡Hola! Soy Paco, tu asistente para ejecutivos de OraBank. Te ayudo a conocer mejor a tus clientes y a identificar oportunidades de ventas cruzadas. ¿Sobre qué cliente o situación quieres consultar?"
     }
   ]);
   const [input, setInput] = useState("");
@@ -104,10 +104,10 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
   };
 
   const suggestedQuestions = [
-    "¿Qué tarjeta de crédito me recomiendas?",
-    "¿Cómo puedo mejorar mi score crediticio?",
-    "¿Qué seguros ofrecen?",
-    "¿Qué opciones de inversión tienen?"
+    "¿El cliente es apto para un aumento de línea de crédito?",
+    "¿Qué oportunidades de venta cruzada ves en este caso?",
+    "¿Qué patrones de gasto identificas en este cliente?",
+    "¿El cliente ha tenido cambios recientes en su uso de crédito o comportamiento financiero?"
   ];
 
   return (
@@ -128,8 +128,8 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
               >
                 <div className="flex-shrink-0 mt-1">
                   {message.type === "bot" ? (
-                    <Avatar className="h-8 w-8 bg-finance-blue-light">
-                      <AvatarFallback>AI</AvatarFallback>
+                    <Avatar className="h-8 w-12 bg-finance-blue-light">
+                      <AvatarFallback className="text-[11px]">PACO</AvatarFallback>
                       <AvatarImage src="/bot-avatar.png" />
                     </Avatar>
                   ) : (
@@ -151,7 +151,7 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
                       <ReactMarkdown>{message.text}</ReactMarkdown>
                     </div>
                   ) : (
-                    <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                  <p className="text-sm whitespace-pre-wrap">{message.text}</p>
                   )}
                   
                   {message.options && (
@@ -209,8 +209,8 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
           {isTyping && (
             <div className="flex justify-start">
               <div className="flex items-start gap-2">
-                <Avatar className="h-8 w-8 bg-finance-blue-light">
-                  <AvatarFallback>AI</AvatarFallback>
+                <Avatar className="h-8 w-14 bg-finance-blue-light flex items-center justify-center">
+                  <AvatarFallback className="text-[11px]">PACO</AvatarFallback>
                   <AvatarImage src="/bot-avatar.png" />
                 </Avatar>
                 

@@ -31,7 +31,7 @@ const CreditScoreCard = () => {
     };
   };
   const scoreInfo = getScoreCategory(score);
-  return <Card className="card-shadow card-hover">
+  return <Card className="card-shadow card-hover bg-white">
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-2">
           <h3 className="font-medium text-lg">Score Crediticio</h3>

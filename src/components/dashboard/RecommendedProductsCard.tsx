@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CreditCard, Landmark, Shield, TrendingUp, ArrowRight, ArrowUpRight, ThumbsUp, Wallet } from "lucide-react";
@@ -11,23 +10,23 @@ const RecommendedProductsCard = () => {
     cards: [
       {
         id: 1,
-        name: "Tarjeta Rewards Plus",
-        description: "3% cashback en restaurantes, 2% en viajes",
+        name: "Tarjeta de Crédito Oro OraBank",
+        description: "Recompensas, seguros, promociones, meses sin intereses y descuentos exclusivos.",
         icon: CreditCard,
-        benefits: ["Sin anualidad el primer año", "Programa de puntos", "Seguros de viaje"],
+        benefits: ["Puntos canjeables por efectivo, viajes y hospedajes", "Protección contra robo", "Acceso al Club de Descuentos."],
         cta: "Solicitar ahora",
         match: 95,
-        url: "https://apps.inbursa.com/InLi/TDC.html"
+        url: "https://www.orabank.com/productos"
       },
       {
         id: 2,
-        name: "Tarjeta Platinum",
+        name: "Tarjeta de Crédito Travel OraBank",
         description: "Tasa preferencial y beneficios exclusivos",
         icon: CreditCard,
         benefits: ["Acceso a salas VIP", "Concierge 24/7", "Seguro de compras"],
         cta: "Más información",
         match: 87,
-        url: "https://apps.inbursa.com/InLi/TDC.html"
+        url: "https://www.orabank.com/productos"
       }
     ],
     loans: [
@@ -79,7 +78,7 @@ const RecommendedProductsCard = () => {
   };
 
   return (
-    <Card className="card-shadow card-hover">
+    <Card className="card-shadow card-hover bg-white">
       <CardHeader className="px-6 pb-0 pt-6">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium">Productos Recomendados</CardTitle>

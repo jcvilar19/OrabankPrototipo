@@ -12,19 +12,29 @@ export default defineConfig({
   },
   server: {
     port: 8080,
-    strictPort: true,
+    strictPort: false,
+    host: true,
     hmr: {
-      overlay: false
+      overlay: true
     }
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'axios', 'xlsx']
+    include: ['react', 'react-dom', 'axios', 'xlsx'],
+    exclude: []
   },
   publicDir: 'public',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: true,
-    chunkSizeWarningLimit: 1000
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          ui: ['@radix-ui/react-icons', '@radix-ui/react-slot']
+        }
+      }
+    }
   }
 });
