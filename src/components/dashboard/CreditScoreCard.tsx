@@ -40,7 +40,7 @@ const CreditScoreCard = () => {
               <TooltipTrigger>
                 <Info className="h-4 w-4 text-finance-gray" />
               </TooltipTrigger>
-              <TooltipContent className="w-[300px]">
+              <TooltipContent className="w-[300px] bg-white">
                 <ScrollArea className="h-[250px]">
                   <p className="text-sm">Este indicador muestra tu puntaje actual del buró de crédito, calculado con base en tu historial financiero y comportamiento de pagos. Un score alto puede ayudarte a obtener mejores condiciones en préstamos, tarjetas de crédito y otros productos financieros.</p>
                 </ScrollArea>
@@ -49,7 +49,7 @@ const CreditScoreCard = () => {
           </TooltipProvider>
         </div>
         
-        <div className="flex items-center justify-center my-6">
+        <div className="flex flex-col items-center justify-center my-6">
           <div className="relative flex flex-col items-center justify-center">
             <div className="absolute text-3xl font-bold text-finance-blue">{score}</div>
             <svg className="w-32 h-32 transform -rotate-90">
@@ -57,13 +57,12 @@ const CreditScoreCard = () => {
               <circle className={scoreInfo.color} strokeWidth="8" strokeDasharray={`${percentage * 3.51} 351`} strokeLinecap="round" stroke="currentColor" fill="transparent" r="56" cx="64" cy="64" />
             </svg>
           </div>
+          <span className={`font-medium mt-2 text-center ${scoreInfo.color.replace('bg-', 'text-')}`}>{scoreInfo.label}</span>
         </div>
         
-        <div className="flex justify-between text-sm text-finance-gray-dark">
+        <div className="flex justify-between text-sm text-finance-gray-dark items-end">
           <span>0</span>
-          <span className={`font-medium ${scoreInfo.color.replace('bg-', 'text-')}`}>
-            {scoreInfo.label}
-          </span>
+          <span></span>
           <span>{maxScore}</span>
         </div>
         

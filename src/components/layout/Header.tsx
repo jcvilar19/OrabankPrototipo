@@ -1,4 +1,3 @@
-
 import { Bell, User, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 
 interface HeaderProps {
   toggleSidebar: () => void;
@@ -29,6 +29,12 @@ const Header = ({ toggleSidebar }: HeaderProps) => {
         </div>
       </div>
       
+      <div className="flex-1 flex justify-center mx-8">
+        <div className="hidden md:flex w-full max-w-md">
+          <Input type="text" placeholder="Buscar..." className="w-full max-w-md" />
+        </div>
+      </div>
+
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-5 w-5" />

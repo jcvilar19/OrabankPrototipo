@@ -47,7 +47,7 @@ const AccountsOverviewCard = () => {
               <TooltipTrigger>
                 <Info className="h-4 w-4 text-finance-gray" />
               </TooltipTrigger>
-              <TooltipContent className="w-[300px]">
+              <TooltipContent className="w-[300px] bg-white">
                 <ScrollArea className="h-[250px]">
                   <p className="text-sm">En esta sección puedes revisar el saldo actual y la evolución reciente de tus diferentes cuentas activas con el banco. Esto incluye cuentas de débito, ahorro, inversión, y tarjetas de crédito, permitiéndote controlar mejor tu dinero y planificar tus finanzas.</p>
                 </ScrollArea>

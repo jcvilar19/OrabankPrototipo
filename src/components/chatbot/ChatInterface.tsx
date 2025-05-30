@@ -260,7 +260,7 @@ const ChatInterface = ({ apiKey }: ChatInterfaceProps) => {
             className="flex-1"
           />
           <Button type="submit" className="bg-finance-blue hover:bg-finance-blue-dark flex-shrink-0">
-            <Send className="h-4 w-4" />
+            <Send className="h-4 w-4 text-white" />
           </Button>
         </form>
       </div>

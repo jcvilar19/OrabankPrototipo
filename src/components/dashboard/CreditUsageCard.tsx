@@ -49,7 +49,7 @@ const CreditUsageCard = () => {
               <TooltipTrigger>
                 <Info className="h-4 w-4 text-finance-gray" />
               </TooltipTrigger>
-              <TooltipContent className="w-[300px]">
+              <TooltipContent className="w-[300px] bg-white">
                 <ScrollArea className="h-[250px]">
                   <p className="text-sm">Esta barra indica el porcentaje de tu crédito total disponible que ya utilizaste. Mantener este porcentaje por debajo del 30% es ideal para mantener o mejorar tu score crediticio y salud financiera general.</p>
                 </ScrollArea>
@@ -64,7 +64,11 @@ const CreditUsageCard = () => {
             <div className="text-sm text-finance-gray-dark">Disponible</div>
             <div className="text-sm font-medium">{formatCurrency(totalCredit - usedCredit)}</div>
           </div>
-          <Progress value={percentUsed} className={`h-3 ${usageLevel.color}`} />
+          <Progress
+            value={percentUsed}
+            className="h-2 rounded-full bg-gray-100"
+            indicatorClassName="bg-finance-blue rounded-full"
+          />
           <div className="flex justify-between items-center mt-1">
             <div className="text-sm text-finance-gray-dark">Utilizado</div>
             <div className="text-sm font-medium">{formatCurrency(usedCredit)}</div>

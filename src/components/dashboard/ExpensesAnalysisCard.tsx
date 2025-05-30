@@ -55,7 +55,7 @@ const ExpensesAnalysisCard = () => {
               <TooltipTrigger>
                 <Info className="h-4 w-4 text-finance-gray" />
               </TooltipTrigger>
-              <TooltipContent className="w-[300px]">
+              <TooltipContent className="w-[300px] bg-white">
                 <ScrollArea className="h-[250px]">
                   <p className="text-sm">Desglose de tus gastos mensuales por categoría.</p>
                 </ScrollArea>

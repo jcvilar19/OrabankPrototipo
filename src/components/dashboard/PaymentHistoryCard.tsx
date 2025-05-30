@@ -19,10 +19,8 @@ const PaymentHistoryCard = () => {
               <TooltipTrigger>
                 <Info className="h-4 w-4 text-finance-gray" />
               </TooltipTrigger>
-              <TooltipContent className="w-[300px]">
-                <ScrollArea className="h-[250px]">
-                  <p className="text-sm">Resumen claro de tus pagos realizados. Mantener tus pagos al día mejora tu historial crediticio y puede impactar positivamente en tu score de crédito, facilitando futuras solicitudes de crédito.</p>
-                </ScrollArea>
+              <TooltipContent className="w-[300px] bg-white">
+                <p className="text-sm break-words">Resumen claro de tus pagos realizados. Mantener tus pagos al día mejora tu historial crediticio y puede impactar positivamente en tu score de crédito, facilitando futuras solicitudes de crédito.</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
